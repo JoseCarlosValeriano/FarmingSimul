@@ -2,12 +2,16 @@ public class Productor extends Thread {
 
     // Atributos
     private final int productor;
+    private Monitor buffer;
     private final int limitePlantacion;
     private static int plantasCreciendo;
-    public long length;
+    private String [] Verduras = {
+            "lettuce", "cabbage", "onion", "spinach", "potato", "celery", "asparagus", "radish",
+            "broccoli", "artichoke", "tomato", "cucumber", "eggplant", "carrot", "green bean"};
 
     //Constructor
-    public Productor(int productor, int limitePlantacion, int plantasCreciendo) {
+    public Productor(Monitor buffer, int productor, int limitePlantacion, int plantasCreciendo) {
+        this.buffer = buffer;
         this.productor = productor;
         this.limitePlantacion = limitePlantacion;
         this.plantasCreciendo = plantasCreciendo;
@@ -26,13 +30,14 @@ public class Productor extends Thread {
             } else {
                 for (int i = 0; i < this.plantasCreciendo; i++) {
                     sleep(2000);
-                    int randomAccess = ((int) (Math.random() * 15));
+                    int verdura = (int) (Math.random() * this.Verduras.length);
+                    String Producto = Verduras[verdura];
                     int TIEMPOCRECIMIENTO = (int) (Math.random() * 900);
                     int productorRandom = ((int) (Math.random() * this.productor));
                     sleep(TIEMPOCRECIMIENTO);
-                    System.out.println("La planta: " + Monitor.getVegetales(randomAccess) + "ha sido cosechada por el productor nº " +
+                    buffer.Producir(Producto);
+                    System.out.println("La planta: " + Producto +"  ha sido cosechada por el productor nº " +
                             productorRandom + " y ha crecido con un tiempo de: " + TIEMPOCRECIMIENTO + " minutos");
-                    Monitor.plantasCrecidas.add(Monitor.getVegetales(randomAccess));
                 }
             }
 
